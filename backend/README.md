@@ -86,4 +86,4 @@ O diretorio src é dividido da seguinte maneira:
 
 ### Passo 6:
 
-> Ative o servidor node com: **npm run start**. Isto fara com que sua aplicação.
+> Ative o servidor node com: **npm run dev**. Isto fara com que sua aplicação.
