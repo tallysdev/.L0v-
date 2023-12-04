@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="bottom-0 w-full bg-gradient-to-tr dark:from-gray-800 dark:to-black-700 flex-col items-center justify-evenly p-8 md:p-16 lg:p-16 pt-20 md-pt-32 text-white text-center text-2xl relative">
+    <footer className="bottom-0 w-full bg-gradient-to-br dark:from-gray-800 dark:to-black-700 flex-col items-center justify-evenly p-8 md:p-16 lg:p-16 pt-20 md-pt-32 text-white text-center text-2xl relative">
       <div className="flex flex-col items-center lg:flex-row md:  sm:flex-col justify-evenly w-full gap-4 lg:gap-96 md:gap-12">
         <Image
           src="/logo.svg"
@@ -13,7 +13,7 @@ export function Footer() {
           className=""
         />
         <div className="mb-4 flex-col items-center md:items-start md:flex-row gap-4 md:mt-0">
-          <span className="mb-2">
+          <span className="mb-2 font-semibold">
             Developed with
             <Image
               src="/heart.svg"
