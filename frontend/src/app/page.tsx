@@ -12,17 +12,17 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-between p-8 md:p-16 lg:p-24 pt-20 md:pt-32 text-white min-h-screen bg-gray-700">
+    <main className="flex flex-col items-center justify-between p-8 md:p-16 lg:p-24 pt-20 md:pt-32 text-white min-h-screen bg-gradient-to-tr dark:from-gray-800 dark:to-black-700">
       <header className="lg:text-8xl md:text-6xl sm:text-4xl text-4xl font-bold mb-8">
         Arrasta papai!
       </header>
       <div className="mb-8">
         <button
-          className="text-white py-4 px-6 mx-auto max-w-sm h-15 w-60 text-center text-xl md:text-2xl font-bold rounded-full "
-          style={{
-            background:
-              "linear-gradient(to top right, #94BBE9 0%, #EEAECA 100%)",
-          }}
+          className="text-white py-4 px-6 mx-auto max-w-sm h-15 w-60 text-center text-xl md:text-2xl font-bold rounded-full bg-gradient-to-r from-pink-400 via-pink-300 to-blue-400 hover:bg-gradient-to-br focus:ring-4 focus:ring-pink-300"
+          // style={{
+          //   background:
+          //     "linear-gradient(to top right, #94BBE9 0%, #EEAECA 100%)",
+          // }}
         >
           Criar conta
         </button>
