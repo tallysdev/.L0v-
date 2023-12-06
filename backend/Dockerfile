@@ -1,11 +1,10 @@
 FROM node:18
-WORKDIR /app
-COPY package.json package-lock.json ./
+WORKDIR /usr/src/app
 COPY package*.json ./
-COPY prisma ./prisma
-COPY .env ./
-COPY tsconfig.json ./
 RUN npm install
+COPY prisma ./prisma
 COPY . .
+COPY tsconfig.json ./
+RUN npx prisma migrate
 RUN npx prisma generate
-EXPOSE 5432
+CMD ["npm", "run", "start:build"]
