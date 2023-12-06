@@ -7,4 +7,4 @@ COPY . .
 COPY tsconfig.json ./
 RUN npx prisma migrate
 RUN npx prisma generate
-CMD ["npm", "run", "start:build"]
+CMD ["npm", "run", "build"]
