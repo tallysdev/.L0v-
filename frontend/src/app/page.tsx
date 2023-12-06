@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 // const colors = {
 //   primary: "#94BBE9",
@@ -17,15 +18,17 @@ export default function Home() {
         Arrasta papai!
       </header>
       <div className="mb-8">
+        <Link href="/login">
         <button
           className="text-white py-4 px-6 mx-auto max-w-sm h-15 w-60 text-center text-xl md:text-2xl font-bold rounded-full bg-gradient-to-r from-pink-400 via-pink-300 to-blue-400 hover:bg-gradient-to-br focus:ring-4 focus:ring-pink-300"
           // style={{
-          //   background:
-          //     "linear-gradient(to top right, #94BBE9 0%, #EEAECA 100%)",
-          // }}
-        >
+            //   background:
+            //     "linear-gradient(to top right, #94BBE9 0%, #EEAECA 100%)",
+            // }}
+            >
           Criar conta
         </button>
+        </Link>
       </div>
       <div className="p-4 md:p-8 rounded-md w-full md:w-screen flex items-center justify-center overflow-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
