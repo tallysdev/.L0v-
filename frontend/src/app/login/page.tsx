@@ -18,11 +18,11 @@ export default function Login() {
                     />
                     <h2 className="text-3xl font-bold">Bem vindo ao <b>.Lov3</b></h2>
                 </div>
-                <div className="mt-8 flex flex-col gap-4 text-gray-900">
+                    <form action="POST" className="mt-8 flex flex-col gap-4 text-gray-900">
                     <input type="text" placeholder="usuario@email.com"  className="p-3 rounded-full text-center"/>
                     <input type="password" placeholder="Senha" className="p-3 rounded-full text-center" />
                     <button type="submit" className="text-white py-4 px-6 mx-auto max-w-sm h-15 w-60 text-center text-xl md:text-2xl font-bold rounded-full bg-gradient-to-r from-pink-400 via-pink-300 to-blue-400 hover:bg-gradient-to-br focus:ring-4 focus:ring-pink-300"> Entrar</button>
-                </div>
+                    </form>
                 <div>
                     <p className="mt-2 underline">Ainda não tem conta?</p>
                     <Link href="/login/register">
