@@ -61,7 +61,7 @@ export function Footer() {
             <div className="flex items-center flex-wrap gap-4 mt-4 md:mt-4 sm:mt-6 ">
               <span className="ml-2 mb-2 md:mb-0">Tallys</span>
               <Link
-                href="https://github.com/tallys-dev"
+                href="https://github.com/tallysdev"
                 target="_blank"
                 className="ml-6"
               >
