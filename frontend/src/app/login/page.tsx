@@ -40,7 +40,7 @@ export default function Login() {
         </form>
         <div className="flex flex-col gap-6 pt-4">
           <p className="mt-2 underline">Ainda não tem conta?</p>
-          <Link href="/login/register">
+          <Link href="/register">
             <p className="text-white py-4 px-6 mx-auto max-w-sm h-15 w-60 text-center text-xl md:text-2xl font-bold rounded-full bg-gradient-to-tl from-pink-400 via-pink-300 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:ring-pink-300">
               Cadastre-se
             </p>
