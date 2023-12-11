@@ -20,6 +20,7 @@ export class UserController {
 
   public async createUser(req: Request, res: Response) {
     try {
+      console.log(req.body);
       const userData: CreateUserInput = req.body;
       const existingUsername = await prisma.user.findFirst({
         where: {
@@ -40,12 +41,18 @@ export class UserController {
           .json({ error: 'Not a valid gender' });
       }
 
-      // Upload the user's profile picture to S3
       if (req.file) {
-        const imageUploaded = await getImage(req);
+        try {
+          const imageUploaded = await getImage(req);
+          const imageData = await uploadImage(imageUploaded);
 
-        const imageData = await uploadImage(imageUploaded.path);
-        userData.photos = imageData.public_id;
+          userData.photos = imageData.public_id;
+        } catch (error) {
+          console.error('Error uploading image:', error);
+          return res
+            .status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .json({ message: 'Error uploading image to Cloudinary' });
+        }
       }
 
       const user: User = await this.userUseCase.create(userData);

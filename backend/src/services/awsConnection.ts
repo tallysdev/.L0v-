@@ -9,9 +9,20 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-export function uploadImage(imageUploaded) {
-  return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload(imageUploaded);
+export async function uploadImage(imageUploaded) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Upload the image to Cloudinary
+      const result = await cloudinary.uploader.upload(imageUploaded.path, {
+        folder: 'user-photos', // Optional: Folder where you want to store user photos
+      });
+
+      // Resolve with the Cloudinary public_id (image identifier)
+      resolve(result);
+    } catch (error) {
+      console.error('Error uploading image to Cloudinary:', error);
+      reject(error);
+    }
   });
 }
 
