@@ -14,7 +14,7 @@ const userRoutes = Router();
 userRoutes.post(
   '/',
   userController.createUser.bind(userController),
-  upload.single('image')
+  upload.single('picture')
 );
 userRoutes.post('/auth', userController.authUser.bind(userController));
 userRoutes.post(
