@@ -5,7 +5,7 @@ import { CreateUserInput, UpdateUserInput } from '../models/user';
 import { UserUseCase } from '../usecase/userUsecase';
 import githubApi from '../services/githubApi';
 import { generateAccessToken } from '../config/generateToken';
-import { uploadToS3 } from '../services/awsConnection';
+import { getImage, uploadImage } from '../services/awsConnection';
 
 const prisma = new PrismaClient();
 import bcrypt from 'bcrypt';
@@ -42,10 +42,10 @@ export class UserController {
 
       // Upload the user's profile picture to S3
       if (req.file) {
-        const profilePictureKey = await uploadToS3(req.file);
-        if (profilePictureKey) {
-          userData.photos = profilePictureKey;
-        }
+        const imageUploaded = await getImage(req);
+
+        const imageData = await uploadImage(imageUploaded.path);
+        userData.photos = imageData.public_id;
       }
 
       const user: User = await this.userUseCase.create(userData);
