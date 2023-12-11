@@ -21,15 +21,13 @@ export class UserController {
   public async createUser(req: Request, res: Response) {
     try {
       const userData: CreateUserInput = req.body;
-      const existingUsername = await prisma.user.findUnique({
-        where: { username: userData.username },
+      const existingUsername = await prisma.user.findFirst({
+        where: {
+          OR: [{ username: userData.username }, { email: userData.email }],
+        },
       });
 
-      const existingEmail = await prisma.user.findUnique({
-        where: { email: userData.email },
-      });
-
-      if (existingUsername || existingEmail) {
+      if (existingUsername) {
         return res
           .status(StatusCodes.BAD_REQUEST)
           .json({ error: 'User already exists!' });
