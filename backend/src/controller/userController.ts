@@ -5,6 +5,7 @@ import { CreateUserInput, UpdateUserInput } from '../models/user';
 import { UserUseCase } from '../usecase/userUsecase';
 import githubApi from '../services/githubApi';
 import { generateAccessToken } from '../config/generateToken';
+import { uploadToS3 } from '../services/awsConnection';
 
 const prisma = new PrismaClient();
 import bcrypt from 'bcrypt';
@@ -18,30 +19,40 @@ export class UserController {
   }
 
   public async createUser(req: Request, res: Response) {
-    const userData: CreateUserInput = req.body;
-    const existingUsername = await prisma.user.findUnique({
-      where: { username: userData.username },
-    });
-
-    const existingEmail = await prisma.user.findUnique({
-      where: { email: userData.email },
-    });
-
-    if (existingUsername || existingEmail) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ error: 'User already exists!' });
-    }
-
-    if (!this.validGenders.includes(userData.gender)) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ error: 'Not a valid gender' });
-    }
     try {
+      const userData: CreateUserInput = req.body;
+      const existingUsername = await prisma.user.findUnique({
+        where: { username: userData.username },
+      });
+
+      const existingEmail = await prisma.user.findUnique({
+        where: { email: userData.email },
+      });
+
+      if (existingUsername || existingEmail) {
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: 'User already exists!' });
+      }
+
+      if (!this.validGenders.includes(userData.gender)) {
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: 'Not a valid gender' });
+      }
+
+      // Upload the user's profile picture to S3
+      if (req.file) {
+        const profilePictureKey = await uploadToS3(req.file);
+        if (profilePictureKey) {
+          userData.photos = profilePictureKey;
+        }
+      }
+
       const user: User = await this.userUseCase.create(userData);
       res.status(StatusCodes.CREATED).json(user);
     } catch (error) {
+      console.error(error);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: 'An error occurred while creating the user',
       });
@@ -101,7 +112,10 @@ export class UserController {
 
   public async listUsers(req: Request, res: Response) {
     try {
-      const users: User[] = await this.userUseCase.listUsers();
+      const limit: number = parseInt(req.query.limit as string) || 10;
+      const offset: number = parseInt(req.query.offset as string) || 0;
+
+      const users: User[] = await this.userUseCase.listUsers(limit, offset);
       res.status(StatusCodes.OK).json(users);
     } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -114,7 +128,6 @@ export class UserController {
     const { likerId, targetUserId } = req.body;
 
     try {
-      // Check if both users exist
       const liker = await prisma.user.findUnique({
         where: { id: likerId },
       });
@@ -140,9 +153,9 @@ export class UserController {
       });
 
       if (existingLike) {
-        return res
-          .status(StatusCodes.OK)
-          .json({ message: "It's a Match! You and the user like each other." });
+        return res.status(StatusCodes.OK).json({
+          message: "It's a Match! You and the user liked each other.",
+        });
       }
 
       const newLike = await prisma.like.create({

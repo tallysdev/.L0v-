@@ -9,7 +9,7 @@ export class UserUseCase {
   }
 
   public async create(userData: CreateUserInput): Promise<User> {
-    const bcrypt = require("bcrypt");
+    const bcrypt = require('bcrypt');
     const hash = await bcrypt.hash(userData.password, 12);
     userData.password = hash;
     const newUser = await this.prisma.user.create({
@@ -39,8 +39,11 @@ export class UserUseCase {
     return user;
   }
 
-  public async listUsers(): Promise<User[]> {
-    const users = await this.prisma.user.findMany();
+  public async listUsers(limit: number, offset: number): Promise<User[]> {
+    const users = await this.prisma.user.findMany({
+      take: limit,
+      skip: offset,
+    });
     return users;
   }
 }
