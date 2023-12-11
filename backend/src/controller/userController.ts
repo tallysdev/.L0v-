@@ -32,6 +32,7 @@ export class UserController {
           .status(StatusCodes.BAD_REQUEST)
           .json({ error: 'User already exists!' });
       }
+      console.log('Received Gender:', userData.gender);
 
       if (!this.validGenders.includes(userData.gender)) {
         return res
