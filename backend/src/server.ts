@@ -1,7 +1,10 @@
 import express from 'express';
 import { routes } from './routes';
+import multer from 'multer';
 
 const app = express();
+const upload = multer();
+app.use(upload.single('photos'));
 
 app.use(express.json());
 app.use(routes);
