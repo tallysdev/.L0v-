@@ -5,7 +5,7 @@ import { CreateUserInput, UpdateUserInput } from '../models/user';
 import { UserUseCase } from '../usecase/userUsecase';
 import githubApi from '../services/githubApi';
 import { generateAccessToken } from '../config/generateToken';
-import { getImage, uploadImage } from '../services/awsConnection';
+import { getImage, uploadImage } from '../services/cloudinaryConnection';
 
 const prisma = new PrismaClient();
 import bcrypt from 'bcrypt';
