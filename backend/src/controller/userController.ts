@@ -5,7 +5,7 @@ import { CreateUserInput, UpdateUserInput } from '../models/user';
 import { UserUseCase } from '../usecase/userUsecase';
 import githubApi from '../services/githubApi';
 import { generateAccessToken } from '../config/generateToken';
-import UploadImagesService from '../services/cloudinaryConnection';
+import { getImage, uploadImage } from '../services/cloudinaryConnection';
 
 const prisma = new PrismaClient();
 import bcrypt from 'bcrypt';
@@ -43,10 +43,10 @@ export class UserController {
 
       if (req.file) {
         try {
-          const uploadedImagesService = new UploadImagesService();
-          const imageUrl = await uploadedImagesService.execute(req.file);
+          const imageUploaded = await getImage(req);
+          const imageData = await uploadImage(imageUploaded);
 
-          userData.photos = imageUrl;
+          userData.photos = imageData.public_id;
         } catch (error) {
           console.error('Error uploading image:', error);
           return res
