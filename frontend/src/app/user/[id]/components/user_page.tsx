@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { format } from "date-fns";
+import { FaRegUser } from "react-icons/fa";
 
 interface User {
   id: string;
@@ -20,17 +21,22 @@ export function UserPage({ user }: { user: User }) {
       <div
         className="flex flex-col items-center justify-center p-10 py-20 rounded-md "
         style={{
-          background: "linear-gradient(to bottom right, #94BBE9 0%, #EEAECA 100%)",
+          background:
+            "linear-gradient(to bottom right, #94BBE9 0%, #EEAECA 100%)",
         }}
       >
         <div className="mb-8 border-2 border-gray-400 rounded-full overflow-hidden p-2 shadow-md">
-          <Image
-            src={"/1699290647491.jpg"}
-            alt="User Image"
-            width={200}
-            height={200}
-            className="rounded-full"
-          />
+          {user.photos ? (
+            <Image
+              src={user.photos}
+              alt="User Image"
+              width={200}
+              height={200}
+              className="rounded-full"
+            />
+          ) : (
+            <FaRegUser size={200} className="rounded-full" />
+          )}
         </div>
         <div className="flex flex-col text-center gap-4">
           <h1 className="text-4xl font-bold">{user.username}</h1>

@@ -1,4 +1,3 @@
-import userId from "./[id]/page";
 export default function Page() {
   return (
     <div className="flex flex-col items-center justify-center p-8 md:p-16 lg:p-24 pt-20 md:pt-32 text-blue-950 min-h-screen w-screen bg-gradient-to-tr dark:from-gray-800 dark:to-black-700">
