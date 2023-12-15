@@ -2,9 +2,45 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-// import Navbar from "./components/navbar";
+import { useRouter } from "next/navigation";  
+import { useState } from "react";
 
 export default function Login() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  async function handleCreate (e:React.FormEvent) {
+    e.preventDefault();
+    const data = {
+      email,
+      password,
+    };
+    try {
+      const response = await fetch('https://dotlove.onrender.com/user/auth/', {
+        method: 'POST',
+        // header 'Access-Control-Allow-Credentials', true
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        router.replace('/');
+        console.log('Cadastro realizado com sucesso!');
+      } else {
+        console.log('Erro ao cadastrar');
+        console.log(data);
+        console.error('Registration failed');
+      }
+    } catch (error) {
+      console.log(data);
+      (error);
+      console.error('Error during registration:', error);
+    }
+  }
+
   return (
     <main className="flex flex-col items-center justify-between md:p-16 lg:p-24 pt-20 md:pt-32 text-white bg-gradient-to-tr dark:from-gray-800 dark:to-black-700">
       <section className="text-center">
@@ -20,15 +56,19 @@ export default function Login() {
             Bem vindo ao <b>.Lov3</b>
           </h1>
         </header>
-        <form action="POST" className="mt-8 flex flex-col gap-4 text-gray-900">
+        <form onSubmit={handleCreate} className="mt-8 flex flex-col gap-4 text-gray-900">
           <input
             type="text"
+            id="text"
             placeholder="usuario@email.com"
+            onChange={e => setEmail(e.target.value)}
             className="p-3 rounded-full text-center"
           />
           <input
             type="password"
+            id="password"
             placeholder="Senha"
+            onChange={e => setPassword(e.target.value)}
             className="p-3 rounded-full text-center"
           />
           <button
