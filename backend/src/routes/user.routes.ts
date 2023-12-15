@@ -23,17 +23,17 @@ userRoutes.post(
 userRoutes.use(authMiddleware);
 userRoutes.post(
   '/like',
-  // authMiddleware,
+  authMiddleware,
   userController.likeUser.bind(userController)
 );
 userRoutes.get(
   '/:username',
-  // authMiddleware,
+  authMiddleware,
   userController.findUser.bind(userController)
 );
 userRoutes.get(
   '/',
-  // authMiddleware,
+  authMiddleware,
   userController.listUsers.bind(userController)
 );
 export { userRoutes };
