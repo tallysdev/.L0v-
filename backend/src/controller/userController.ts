@@ -228,6 +228,8 @@ export class UserController {
           .send({ error: 'Invalid password' });
       }
 
+      res.setHeader('Access-Control-Allow-Origin', '*');
+
       //Criação de token baseado no id do usuário
       res
         .status(StatusCodes.OK)
