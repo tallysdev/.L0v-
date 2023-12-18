@@ -4,15 +4,33 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Register() {
+    let database: any[] = [];
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [username, setUsername] = useState('');
     const [birthdate, setBirthdate] = useState('');
-    const [gender, setGender] = useState('');
     const [bio, setBio] = useState('');
     const [photos, setPhotos] = useState('');
+    const [gender, setGender] = useState('');
+    const handleCheckboxChange = (selectedGender: React.SetStateAction<string>) => {
+        // Se a opção selecionada já está marcada, desmarque-a
+        if (gender === selectedGender) {
+            setGender('');
+        } else {
+            // Senão, marque a opção selecionada
+            setGender(selectedGender);
+        }
+    };
+    const nullCheck = () => {
+        if (email === '' || password === '' || passwordConfirm === '' || username === '' || birthdate === '' || gender === '' || bio === '') {
+            alert('Preencha todos os campos!');
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     async function handleCreate(e: React.FormEvent) {
         e.preventDefault();
@@ -26,23 +44,18 @@ export default function Register() {
             photos
         };
         try {
-            const response = await fetch('https://dotlove.onrender.com/user/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-            if (response.ok) {
-                router.replace('/');
-                console.log('Cadastro realizado com sucesso!');
-            } else {
-                console.log('Erro ao cadastrar');
-                console.log(data);
-                console.error('Registration failed');
+            if (password !== passwordConfirm) {
+                alert('As senhas precisam ser iguais!');
+                return;
+            }
+            if (nullCheck()) {
+                database.push(data);
+                localStorage.setItem('database', JSON.stringify(database));
+                // console.log(localStorage.getItem('database'));
+                alert('Cadastrado com sucesso!');
             }
         } catch (error) {
-            console.log(data);
+            // console.log(data);
             console.log(error);
         }
     }
@@ -51,7 +64,7 @@ export default function Register() {
             <header>
                 <h1 className="text-3xl font-bold ">Bem vindo ao Cadastro no .Lov3</h1>
             </header>
-            <form onSubmit={handleCreate} >
+            <form onSubmit={handleCreate}>
                 <section className="mt-8 flex flex-col gap-4 text-gray-900">
                     <div className="flex justify-between items-center gap-4">
                         <label htmlFor="text" className="text-xl text-white font-bold">Nome de usuario:</label>
@@ -84,17 +97,45 @@ export default function Register() {
                     </div>
 
                     <div className="flex justify-between items-center gap-4">
-                        <label htmlFor="checkbox" className="text-xl text-white font-bold">Genero: </label>
+                        <label htmlFor="checkbox" className="text-xl text-white font-bold">
+                            Gênero:
+                        </label>
                         <div className="flex gap-4">
-                            <input type="checkbox" name="gender" id="male" className="w-4" 
-                            onChange={(e) => setGender(e.target.value)}/>
-                            <label htmlFor="male" className="text-xl text-white ">Masculino</label>
-                            <input type="checkbox" name="gender" id="female" className="w-4" 
-                            onChange={(e) => setGender(e.target.value)}/>
-                            <label htmlFor="female" className="text-xl text-white ">Feminno</label>
-                            <input type="checkbox" name="gender" id="not" className="w-4" 
-                            onChange={(e) => setGender(e.target.value)}/>
-                            <label htmlFor="not" className="text-xl text-white ">Não informar</label>
+                            <input
+                                type="checkbox"
+                                name="gender"
+                                id="male"
+                                checked={gender === 'male'}
+                                className="w-4"
+                                onChange={() => handleCheckboxChange('male')}
+                            />
+                            <label htmlFor="male" className="text-xl text-white">
+                                Masculino
+                            </label>
+
+                            <input
+                                type="checkbox"
+                                name="gender"
+                                id="female"
+                                checked={gender === 'female'}
+                                className="w-4"
+                                onChange={() => handleCheckboxChange('female')}
+                            />
+                            <label htmlFor="female" className="text-xl text-white">
+                                Feminino
+                            </label>
+
+                            <input
+                                type="checkbox"
+                                name="gender"
+                                id="not"
+                                checked={gender === 'not'}
+                                className="w-4"
+                                onChange={() => handleCheckboxChange('not')}
+                            />
+                            <label htmlFor="not" className="text-xl text-white">
+                                Não informar
+                            </label>
                         </div>
                     </div>
                     <div className="flex justify-between items-center gap-4">
