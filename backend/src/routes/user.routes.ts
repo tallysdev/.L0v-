@@ -1,19 +1,13 @@
 import { Router } from 'express';
 import { UserController } from '../controller/userController';
 import authMiddleware from '../middlewares/authMiddleware';
-import multer from 'multer';
-import uploadConfig from '../config/upload';
 
 const userController = new UserController();
 
-// Create a multer instance with the configured storage
-
 const userRoutes = Router();
-const upload = multer(uploadConfig);
 userRoutes.post(
   '/',
   userController.createUser.bind(userController),
-  upload.single('photos')
 );
 userRoutes.post('/auth', userController.authUser.bind(userController));
 userRoutes.post(

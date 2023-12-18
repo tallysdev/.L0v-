@@ -5,7 +5,6 @@ import { CreateUserInput, UpdateUserInput } from '../models/user';
 import { UserUseCase } from '../usecase/userUsecase';
 import githubApi from '../services/githubApi';
 import { generateAccessToken } from '../config/generateToken';
-import { getImage, uploadImage } from '../services/cloudinaryConnection';
 
 const prisma = new PrismaClient();
 import bcrypt from 'bcrypt';
@@ -20,12 +19,9 @@ export class UserController {
 
   public async createUser(req: Request, res: Response) {
     try {
-      console.log(req.body);
       const userData: CreateUserInput = req.body;
-      const existingUsername = await prisma.user.findFirst({
-        where: {
-          OR: [{ username: userData.username }, { email: userData.email }],
-        },
+      const existingUsername = await prisma.user.findUnique({
+        where: { username: userData.username },
       });
 
       if (existingUsername) {
@@ -33,7 +29,6 @@ export class UserController {
           .status(StatusCodes.BAD_REQUEST)
           .json({ error: 'User already exists!' });
       }
-      console.log('Received Gender:', userData.gender);
 
       if (!this.validGenders.includes(userData.gender)) {
         return res
@@ -41,19 +36,18 @@ export class UserController {
           .json({ error: 'Not a valid gender' });
       }
 
-      if (req.file) {
-        try {
-          const imageUploaded = await getImage(req);
-          const imageData = await uploadImage(imageUploaded);
+      // if (req.file) {
+      //   try {
+      //     const imageUploaded = await getImage(req);
+      //     const imageData = await uploadImage(imageUploaded);
 
-          userData.photos = imageData.public_id;
-        } catch (error) {
-          console.error('Error uploading image:', error);
-          return res
-            .status(StatusCodes.INTERNAL_SERVER_ERROR)
-            .json({ message: 'Error uploading image to Cloudinary' });
-        }
-      }
+      //   } catch (error) {
+      //     console.error('Error uploading image:', error);
+      //     return res
+      //       .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      //       .json({ message: 'Error uploading image to Cloudinary' });
+      //   }
+      // }
 
       const user: User = await this.userUseCase.create(userData);
       res.status(StatusCodes.CREATED).json(user);
