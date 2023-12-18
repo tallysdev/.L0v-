@@ -13,34 +13,43 @@ export default function Login() {
 
   async function handleCreate (e:React.FormEvent) {
     e.preventDefault();
-    const data = {
-      email,
-      password,
-    };
+    // const data = {
+    //   email,
+    //   password,
+    // };
     try {
-      const response = await fetch('https://dotlove.onrender.com/user/auth/', {
-        method: 'POST',
-        // header 'Access-Control-Allow-Credentials', true
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        router.replace('/');
-        console.log('Cadastro realizado com sucesso!');
-      } else {
-        console.log('Erro ao cadastrar');
-        console.log(data);
-        console.error('Registration failed');
+      localStorage.getItem('database');
+      const database = JSON.parse(localStorage.getItem('database') || '[]');
+      if (database.length === 0) {
+        alert('Algo deu errado no localStorage');
       }
+      for (let i = 0; i < database.length; i++) {
+        console.log(email);
+        if (database[i].email === email && database[i].password === password) {
+            alert('Login bem sucedido!');
+            router.push('/');
+            return true;
+        }
+    }
+    alert('Login falhou!');
+    return false
     } catch (error) {
-      console.log(data);
-      (error);
       console.error('Error during registration:', error);
     }
   }
-
+//   function login(email: any, password: any) {
+//     // Verifique se o usuário existe no array
+//     for (let i = 0; i < database.length; i++) {
+//         if (database[i].email === email && database[i].password === password) {
+//             // Usuário encontrado, faça login
+//             alert('Login bem sucedido!');
+//             return true;
+//         }
+//     }
+//     // Usuário não encontrado, faça logout
+//     alert('Login falhou!');
+//     return false;
+// }
   return (
     <main className="flex flex-col items-center justify-between md:p-16 lg:p-24 pt-20 md:pt-32 text-white bg-gradient-to-tr dark:from-gray-800 dark:to-black-700">
       <section className="text-center">
