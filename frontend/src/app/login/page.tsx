@@ -27,6 +27,7 @@ export default function Login() {
         console.log(email);
         if (database[i].email === email && database[i].password === password) {
             alert('Login bem sucedido!');
+            localStorage.setItem('user', JSON.stringify(database[i]));
             router.push('/');
             return true;
         }
