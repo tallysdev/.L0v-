@@ -25,6 +25,7 @@ export function Navbar() {
         <NavLink href="/login" text="Login" />
         <NavLink href="/register" text="Register" />
         <NavLink href="/user/1" text="Profile" />
+        <NavLink href="/feed" text="Feed" />
         {/* Podemos colocar mais caso necessário */}
         {/* <NavLink href="/about" text="About" />
         <NavLink href="/contact" text="Contact" /> */}
