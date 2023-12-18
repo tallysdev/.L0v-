@@ -1,3 +1,4 @@
+"use client";
 import { UserPage } from "./components/user_page";
 
 interface User {
@@ -28,7 +29,7 @@ const newUser: User = {
 export default function userId() {
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <UserPage user={newUser} />
+      <UserPage/>
     </div>
   );
 }
