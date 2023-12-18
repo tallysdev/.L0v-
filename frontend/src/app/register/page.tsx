@@ -51,8 +51,8 @@ export default function Register() {
             if (nullCheck()) {
                 database.push(data);
                 localStorage.setItem('database', JSON.stringify(database));
-                // console.log(localStorage.getItem('database'));
                 alert('Cadastrado com sucesso!');
+                router.push('/login');
             }
         } catch (error) {
             // console.log(data);
