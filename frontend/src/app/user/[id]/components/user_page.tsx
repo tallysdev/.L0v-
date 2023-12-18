@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { format } from "date-fns";
 import { FaRegUser } from "react-icons/fa";
@@ -15,7 +16,9 @@ interface User {
   updatedAt: Date;
 }
 
-export function UserPage({ user }: { user: User }) {
+export function UserPage() {
+  let user = JSON.parse(localStorage.getItem("user") || "[]");
+  
   return (
     <div className="flex flex-col items-center justify-center p-8 md:p-16 lg:p-24 pt-20 md:pt-32 text-blue-950 min-h-screen w-screen bg-gradient-to-tr dark:from-gray-800 dark:to-black-700">
       <div
@@ -39,14 +42,14 @@ export function UserPage({ user }: { user: User }) {
           )}
         </div>
         <div className="flex flex-col text-center gap-4">
-          <h1 className="text-4xl font-bold">{user.username}</h1>
-          <p className="text-blue-950  text-lg">{user.email}</p>
+          <h1 className="text-4xl font-bold">Nome: {user.username}</h1>
+          <p className="text-blue-950  text-lg">Email: {user.email}</p>
           <p className="text-blue-950  text-lg">
-            Birthdate: {format(new Date(user.birthdate), "MMMM dd, yyyy")}
+            Birthdate: {format(new Date(user.birthdate), "dd, MM, yyyy")}
           </p>
           <p className="text-blue-950  text-lg">Gender: {user.gender}</p>
           <p className="text-blue-950 text-xl overflow-hidden overflow-ellipsis max-w-lg whitespace-pre-line">
-            {user.bio}
+            Bio: {user.bio}
           </p>
         </div>
       </div>

@@ -2,9 +2,55 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-// import Navbar from "./components/navbar";
+import { useRouter } from "next/navigation";  
+import { useState } from "react";
 
 export default function Login() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  async function handleCreate (e:React.FormEvent) {
+    e.preventDefault();
+    // const data = {
+    //   email,
+    //   password,
+    // };
+    try {
+      localStorage.getItem('database');
+      const database = JSON.parse(localStorage.getItem('database') || '[]');
+      if (database.length === 0) {
+        alert('Algo deu errado no localStorage');
+      }
+      for (let i = 0; i < database.length; i++) {
+        console.log(email);
+        if (database[i].email === email && database[i].password === password) {
+            alert('Login bem sucedido!');
+            localStorage.setItem('user', JSON.stringify(database[i]));
+            router.push('/');
+            return true;
+        }
+    }
+    alert('Login falhou!');
+    return false
+    } catch (error) {
+      console.error('Error during registration:', error);
+    }
+  }
+//   function login(email: any, password: any) {
+//     // Verifique se o usuário existe no array
+//     for (let i = 0; i < database.length; i++) {
+//         if (database[i].email === email && database[i].password === password) {
+//             // Usuário encontrado, faça login
+//             alert('Login bem sucedido!');
+//             return true;
+//         }
+//     }
+//     // Usuário não encontrado, faça logout
+//     alert('Login falhou!');
+//     return false;
+// }
   return (
     <main className="flex flex-col items-center justify-between md:p-16 lg:p-24 pt-20 md:pt-32 text-white bg-gradient-to-tr dark:from-gray-800 dark:to-black-700">
       <section className="text-center">
@@ -20,15 +66,19 @@ export default function Login() {
             Bem vindo ao <b>.Lov3</b>
           </h1>
         </header>
-        <form action="POST" className="mt-8 flex flex-col gap-4 text-gray-900">
+        <form onSubmit={handleCreate} className="mt-8 flex flex-col gap-4 text-gray-900">
           <input
             type="text"
+            id="text"
             placeholder="usuario@email.com"
+            onChange={e => setEmail(e.target.value)}
             className="p-3 rounded-full text-center"
           />
           <input
             type="password"
+            id="password"
             placeholder="Senha"
+            onChange={e => setPassword(e.target.value)}
             className="p-3 rounded-full text-center"
           />
           <button

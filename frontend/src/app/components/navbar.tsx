@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -21,6 +22,9 @@ export function Navbar() {
 
       <div className="flex  items-center space-x-4 lg:mr-10 md:mr-10 sm:0 ">
         <NavLink href="/" text="Home" />
+        <NavLink href="/login" text="Login" />
+        <NavLink href="/register" text="Register" />
+        <NavLink href="/user/1" text="Profile" />
         {/* Podemos colocar mais caso necessário */}
         {/* <NavLink href="/about" text="About" />
         <NavLink href="/contact" text="Contact" /> */}
@@ -28,7 +32,7 @@ export function Navbar() {
     </nav>
   );
 }
-
+// console.log(localStorage.getItem('user'));
 const NavLink = ({ href, text }: { href: string; text: string }) => (
   <Link href={href}>
     <span className="text-white font-semibold text-xl hover:text-pink-400">
